@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.util.PoseEstimator.TimestampedVisionUpdate;
+import frc.robot.lib.util.PoseEstimator.TimestampedVisionUpdate;
 
 public class SwerveDrive extends SubsystemBase {
     // Distance between wheels
@@ -65,7 +65,7 @@ public class SwerveDrive extends SubsystemBase {
 
     // private frc.robot.util.PoseEstimator poseEstimator = new
     // frc.robot.util.PoseEstimator(VecBuilder.fill(0.3, 0.3, 0.02*5));
-    private frc.robot.util.PoseEstimator poseEstimator = new frc.robot.util.PoseEstimator(
+    private frc.robot.lib.util.PoseEstimator poseEstimator = new frc.robot.lib.util.PoseEstimator(
             VecBuilder.fill(0.3, 0.3, 0.02)); // dif standard devs
     private double[] lastModulePositionMeters = new double[] { 0.0, 0.0, 0.0, 0.0 };
     private Rotation2d lastGyroYaw = new Rotation2d();

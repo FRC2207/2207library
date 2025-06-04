@@ -13,6 +13,8 @@ package frc.robot.current;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final String robot = "Real";
+  
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
