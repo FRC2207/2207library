@@ -6,9 +6,9 @@ import java.util.List;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.VecBuilder;
@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.current.Constants;
 import frc.robot.lib.util.PoseEstimator.TimestampedVisionUpdate;
 
 public class SwerveDrive extends SubsystemBase {
@@ -84,9 +85,9 @@ public class SwerveDrive extends SubsystemBase {
      * @param blIO Same thing here
      * @param brIO And one more time
      */
-    public SwerveDrive(double trackWidthX, double trackWidthY, PIDConfig drivePID, PIDConfig turnPID, GyroIO gyroIO, ModuleType moduleType,
-                        ModuleIO flIO, ModuleIO frIO, ModuleIO blIO, ModuleIO brIO) {
-
+    public SwerveDrive(double trackWidthX, double trackWidthY, PIDConfig drivePID, PIDConfig turnPID, GyroIO gyroIO, ModuleType moduleType, 
+    ModuleConfig flConfig, ModuleConfig frConfig, ModuleConfig blConfig, ModuleConfig brConfig) {
+    
         System.out.println("[Init] Creating SwerveDrive");
 
         this.TrackWidthX = Units.inchesToMeters(trackWidthX);
@@ -103,11 +104,22 @@ public class SwerveDrive extends SubsystemBase {
             // Handle exception as needed
             e.printStackTrace();
         }
+        
+        switch (Constants.robot) {
+            case "Real":
+                modules[0] = new Module(new ModuleIOSparkMax(0, moduleType, flConfig), 0, drivePID, turnPID);
+                modules[1] = new Module(new ModuleIOSparkMax(0, moduleType, frConfig), 1, drivePID, turnPID);
+                modules[2] = new Module(new ModuleIOSparkMax(0, moduleType, blConfig), 2, drivePID, turnPID);
+                modules[3] = new Module(new ModuleIOSparkMax(0, moduleType, brConfig), 3, drivePID, turnPID);
+                break;
+            case "Sim":
+                modules[0] = new Module(new ModuleIOSim(), 0, drivePID, turnPID);
+                modules[1] = new Module(new ModuleIOSim(), 1, drivePID, turnPID);
+                modules[2] = new Module(new ModuleIOSim(), 2, drivePID, turnPID);
+                modules[3] = new Module(new ModuleIOSim(), 3, drivePID, turnPID);
+                break;
+        }
 
-        modules[0] = new Module(flIO, 0, drivePID, turnPID);
-        modules[1] = new Module(frIO, 1, drivePID, turnPID);
-        modules[2] = new Module(blIO, 2, drivePID, turnPID);
-        modules[3] = new Module(brIO, 3, drivePID, turnPID);
         lastMovementTimer.start();
         for (var module : modules) {
             module.setBrakeMode(false);
