@@ -5,12 +5,14 @@
 package frc.robot.current;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.current.Constants.OperatorConstants;
 import frc.robot.current.commands.Autos;
 import frc.robot.current.commands.ExampleCommand;
 import frc.robot.current.subsystems.ExampleSubsystem;
+import frc.robot.lib.commands.DriveWithController;
 import frc.robot.lib.swerve.updated.GyroIO;
 import frc.robot.lib.swerve.updated.GyroIOADXRS450;
 import frc.robot.lib.swerve.updated.ModuleConfig;
@@ -32,7 +34,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  private final CommandXboxController driveXbox =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -87,7 +89,10 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    driveXbox.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    swerveDrive.setDefaultCommand(new DriveWithController(swerveDrive, 0.5, 0.75, () -> driveXbox.getLeftX(), () -> driveXbox.getLeftY(), () -> driveXbox.getRightX(), () -> driveXbox.getRightX(), () -> driveXbox.a().getAsBoolean()));
+    driveXbox.x().onTrue(Commands.runOnce(swerveDrive::stopWithX,swerveDrive));
   }
 
   /**
