@@ -80,13 +80,23 @@ public class SwerveDrive extends SubsystemBase {
      * @param turnPID The PID constants for angular motion
      * @param gyroIO What IO you'd like to use for the gyroscope
      * @param moduleType The model of module you are using. 
-     * @param flIO What IO you'd like to use for the modules. 
-     * @param frIO Put the same IO here, but different motor config
-     * @param blIO Same thing here
-     * @param brIO And one more time
+     * @param flConfig The config you would like to use for this module
+     * @param frConfig The config you would like to use for this module
+     * @param blConfig The config you would like to use for this module
+     * @param brConfig The config you would like to use for this module
      */
-    public SwerveDrive(double trackWidthX, double trackWidthY, PIDConfig drivePID, PIDConfig turnPID, GyroIO gyroIO, ModuleType moduleType, 
-    ModuleConfig flConfig, ModuleConfig frConfig, ModuleConfig blConfig, ModuleConfig brConfig) {
+    public SwerveDrive(
+        double trackWidthX, 
+        double trackWidthY, 
+        PIDConfig drivePID, 
+        PIDConfig turnPID, 
+        GyroIO gyroIO, 
+        ModuleType moduleType, 
+        ModuleConfig flConfig, 
+        ModuleConfig frConfig, 
+        ModuleConfig blConfig, 
+        ModuleConfig brConfig
+        ) {
     
         System.out.println("[Init] Creating SwerveDrive");
 

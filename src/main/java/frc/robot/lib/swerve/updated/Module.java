@@ -92,7 +92,7 @@ public class Module {
             turnFeedback.calculate(getAngle().getRadians(), state.angle.getRadians()));
 
         // Update velocity based on turn error
-        state.speedMetersPerSecond *= Math.cos(turnFeedback.getPositionError());
+        state.speedMetersPerSecond *= Math.cos(turnFeedback.getError());
 
         // Run drive controller
         double velocityRadPerSec = state.speedMetersPerSecond / wheelRadius;
