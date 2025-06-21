@@ -80,11 +80,7 @@ public class DriveWithController extends Command {
         Rotation2d linearDirection;
 
         // Handle case where both leftX and leftY are zero
-        if (linearMagnitude == 0) {
-            linearDirection = new Rotation2d(0); // Default to 0 radians
-        } else {
-            linearDirection = new Rotation2d(leftY, leftX);
-        }
+        linearDirection = new Rotation2d(leftY, leftX);
     
         // Apply deadband
         linearMagnitude = MathUtil.applyDeadband(linearMagnitude, 0.05);
