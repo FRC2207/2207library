@@ -38,8 +38,8 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     /**
      * 
-     * @param index        The ID the modules are coded as. Front left is 1, fr 2,
-     *                     bl 3, br 4.
+     * @param index        The ID the modules are coded as. Front left is 0, fr 1,
+     *                     bl 2, br 3.
      * @param moduleType   This is again the model of module you are using
      * @param moduleConfig This is where you set constants for each module
      */
@@ -49,7 +49,7 @@ public class ModuleIOSparkMax implements ModuleIO {
         driveAfterEncoderReduction = moduleType.driveReduction();
         turnAfterEncoderReduction = moduleType.turnReduction();
 
-        if (index < 3 && index > 0) {
+        if (index <= 3 && index >= 0) {
             driveSparkMax = new SparkMax(moduleConfig.getDriveID(), MotorType.kBrushless);
             turnSparkMax = new SparkMax(moduleConfig.getTurnID(), MotorType.kBrushless);
             turnAbsoluteEncoder = new CANcoder(moduleConfig.getEncoderID());
