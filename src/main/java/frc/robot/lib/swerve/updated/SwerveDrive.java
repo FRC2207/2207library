@@ -45,7 +45,7 @@ public class SwerveDrive extends SubsystemBase {
     public static final double coastThresholdSecs = 6.0; // Need to be under the above speed for this length of time to
                                                          // switch to coast
 
-    private final GyroIO gyroIO;
+    private GyroIO gyroIO;
     private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
     private final Module[] modules = new Module[4]; // FL, FR, BL, BR
 
@@ -90,7 +90,6 @@ public class SwerveDrive extends SubsystemBase {
         double trackWidthY, 
         PIDConfig drivePID, 
         PIDConfig turnPID, 
-        GyroIO gyroIO, 
         ModuleType moduleType, 
         ModuleConfig flConfig, 
         ModuleConfig frConfig, 
@@ -106,7 +105,6 @@ public class SwerveDrive extends SubsystemBase {
         this.maxLinearSpeed = Units.feetToMeters(moduleType.maxSpeed()); 
         this.maxAngularSpeed = maxLinearSpeed / Arrays.stream(getModuleTranslations()).map(translation -> translation.getNorm())
         .max(Double::compare).get();
-        this.gyroIO = gyroIO;
 
         try {
             config = RobotConfig.fromGUISettings();
@@ -121,12 +119,16 @@ public class SwerveDrive extends SubsystemBase {
                 modules[1] = new Module(new ModuleIOSparkMax(1, moduleType, frConfig), 1, drivePID, turnPID);
                 modules[2] = new Module(new ModuleIOSparkMax(2, moduleType, blConfig), 2, drivePID, turnPID);
                 modules[3] = new Module(new ModuleIOSparkMax(3, moduleType, brConfig), 3, drivePID, turnPID);
+
+                gyroIO = new GyroIOADXRS450();
                 break;
             case "Sim":
                 modules[0] = new Module(new ModuleIOSim(), 0, drivePID, turnPID);
                 modules[1] = new Module(new ModuleIOSim(), 1, drivePID, turnPID);
                 modules[2] = new Module(new ModuleIOSim(), 2, drivePID, turnPID);
                 modules[3] = new Module(new ModuleIOSim(), 3, drivePID, turnPID);
+
+                gyroIO = new GyroIOADXRS450();
                 break;
         }
 
