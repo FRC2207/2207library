@@ -93,9 +93,6 @@ public class DriveWithController extends Command {
         linearMagnitude *= linearSpeedLimit;
         rightX *= angularSpeedLimit;
 
-        System.out.println("RightX: " + rightX + ", RightY: " + rightY);
-
-
         // Calculate new linear components
         Translation2d linearVelocity =
             new Pose2d(new Translation2d(), linearDirection)

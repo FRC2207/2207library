@@ -52,7 +52,8 @@ public class SwerveDrive extends SubsystemBase {
     private final SysIdRoutine sysId;
     private static RobotConfig config;
 
-    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
+    private SwerveDriveKinematics kinematics;
+    // = new SwerveDriveKinematics(getModuleTranslations());
 
     private ChassisSpeeds setpoint = new ChassisSpeeds();
     private SwerveModuleState[] lastSetpointStates = new SwerveModuleState[] {
@@ -92,6 +93,8 @@ public class SwerveDrive extends SubsystemBase {
 
         this.TrackWidthX = Units.inchesToMeters(trackWidthX);
         this.TrackWidthY = Units.inchesToMeters(trackWidthY);
+
+        kinematics = new SwerveDriveKinematics(getModuleTranslations());
 
         this.maxLinearSpeed = Units.feetToMeters(moduleType.maxSpeed()); 
         this.maxAngularSpeed = Math.PI;
