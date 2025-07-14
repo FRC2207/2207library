@@ -130,7 +130,7 @@ public class DriveWithController extends Command {
         // PID loop to correct straight movemnt
         // Check if no joystick input for rotation
         if (rightX == 0.0 && Math.abs(linearMagnitude) > 0.10 ) {
-            // Store values and enable further logic
+           /* // Store values and enable further logic
             if (!isRunHeadingPID) {
                 isRunHeadingPID = true; // Set the enable boolean to true
                 lastHeading = drive.getRotation(); // Store last heading
@@ -150,7 +150,7 @@ public class DriveWithController extends Command {
             }
 
             Logger.recordOutput("Drive/HeadingPIDEnabled", isRunHeadingPID);
-            Logger.recordOutput("Drive/LastHeading", lastHeading);
+            Logger.recordOutput("Drive/LastHeading", lastHeading); */
         } else {
             isRunHeadingPID = false;
             Logger.recordOutput("Drive/HeadingPIDOutputRadPerSec", 0.0);
