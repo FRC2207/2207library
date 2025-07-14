@@ -77,7 +77,7 @@ public class DriveWithController extends Command {
 
         // Get direction and magnitude of linear axes
         double linearMagnitude = Math.hypot(leftY, leftX);
-        Rotation2d linearDirection = new Rotation2d(leftY, leftX);
+        Rotation2d linearDirection = new Rotation2d(leftY + 1e-6, leftX + 1e-6);
 
         // Apply deadband
         linearMagnitude = MathUtil.applyDeadband(linearMagnitude, 0.05);
@@ -92,6 +92,9 @@ public class DriveWithController extends Command {
         // Apply speed limits
         linearMagnitude *= linearSpeedLimit;
         rightX *= angularSpeedLimit;
+
+        System.out.println("RightX: " + rightX + ", RightY: " + rightY);
+
 
         // Calculate new linear components
         Translation2d linearVelocity =
