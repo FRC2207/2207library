@@ -62,7 +62,7 @@ public class LedModes {
             final var hue = color.hues();
             final var value = color.value();
             // Sets the specified LED to the HSV values for the preferred color
-            ledBuffer.setHSV(i, hue, 255, value);
+            ledBuffer.setHSV(i, hue, 255, 100);
         }
     }
 
@@ -80,12 +80,12 @@ public class LedModes {
                 final var hue = color1.hues();
                 final var value = color1.value();
                 // Sets the specified LED to the HSV values for the preferred color
-                ledBuffer.setHSV(i, hue, 255, value);
+                ledBuffer.setHSV(i, hue, 255, 100);
             } else {
                 final var hue = color2.hues();
                 final var value = color2.value();
                 // Sets the specified LED to the HSV values for the preferred color
-                ledBuffer.setHSV(i, hue, 255, value);
+                ledBuffer.setHSV(i, hue, 255, 100);
             }
         }
     }
