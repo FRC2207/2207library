@@ -68,10 +68,11 @@ public class LedOperation extends SubsystemBase {
   public LedOperation() {
     leds.addSection("full", 0, 200);
     leds.addSection("right", 41, 80);
-    leds.addSection("top", 81, 120);
-    leds.addSection("left", 121, 160);
-    leds.addSection("underglow", 0, 40);
-    leds.addSection("underglow", 161, 200);
+    leds.addSection("front", 81, 130);
+    leds.addSection("left", 131, 200);
+    leds.addSection("mechanismFrame", 41, 200);
+    leds.addSection("underglow1", 0, 40);
+    leds.addSection("underglow", 200, 240);
 
     m_chooser.setDefaultOption("Solid", setSolid);
     m_chooser.addOption("Two Color Solid", setTwoToneSolid);
@@ -130,7 +131,7 @@ public class LedOperation extends SubsystemBase {
     if (DriverStation.isEStopped()) {
       leds.strobe("full", LedColor.RED, 1);
     } else if (DriverStation.isAutonomousEnabled()) {
-      leds.rainbow("top", 4);
+      leds.rainbow("front", 4);
     } else if (DriverStation.isTeleopEnabled()) {
       if (automaticLED) {
         updateState();
@@ -139,11 +140,11 @@ public class LedOperation extends SubsystemBase {
       }
     } else {
       if (DriverStation.isDSAttached()) {
-        leds.fill("top", LedColor.ORANGE, 2, 2, false);
+        leds.fill("front", LedColor.ORANGE, 2, 2, false);
       } else if (DriverStation.isFMSAttached()) {
-        leds.solid("top", LedColor.ORANGE);
+        leds.solid("front", LedColor.ORANGE);
       } else {
-        leds.breath("top", LedColor.ORANGE, 2);
+        leds.breath("front", LedColor.ORANGE, 2);
       }
     }
 
@@ -151,8 +152,10 @@ public class LedOperation extends SubsystemBase {
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Blue) {
         leds.solid("underglow", LedColor.BLUE);
+        leds.solid("underglow1", LedColor.BLUE);
       } else {
         leds.solid("underglow", LedColor.RED);
+        leds.solid("underglow1", LedColor.RED);
       }
     }
   }
@@ -233,46 +236,47 @@ public class LedOperation extends SubsystemBase {
         break;
       default:
         color = LedColor.LIGHT_ORANGE;
+        break;
     }
 
     switch (manualLedState) {
       case setSolid:
-        leds.solid("top", color);
+        leds.solid("mechanismFrame", color);
         break;
       case setTwoToneSolid:
-        leds.solidTwoColor("top", LedColor.TURQUOISE, LedColor.PEACH);
+        leds.solidTwoColor("mechanismFrame", LedColor.TURQUOISE, LedColor.PEACH);
         break;
       case fadeBlueGreen:
-        leds.fade("top", LedColor.GREEN, LedColor.BLUE, 1, 3);
+        leds.fade("mechanismFrame", LedColor.GREEN, LedColor.BLUE, 1, 3);
         break;
       case breathColor:
-        leds.breath("top", color, 3);
+        leds.breath("mechanismFrame", color, 3);
         break;
       case rainbow:
-        leds.rainbow("top", 3);
+        leds.rainbow("mechanismFrame", 3);
         break;
       case strobeColor:
-        leds.strobe("top", color, 1);
+        leds.strobe("mechanismFrame", color, 1);
         break;
       case carnivalEasterGreenPurple:
-        leds.carnival("top", LedColor.EASTER_GREEN, LedColor.EASTER_PURPLE, 2, 4);
+        leds.carnival("mechanismFrame", LedColor.EASTER_GREEN, LedColor.EASTER_PURPLE, 2, 4);
         break;
       case setColorBlack:
-        leds.solid("top", LedColor.BLACK);
+        leds.solid("mechanismFrame", LedColor.BLACK);
         break;
       case fillColor:
-        leds.fill("top", color, 1, 2, true);
+        leds.fill("mechanismFrame", color, 1, 2, true);
         break;
       case zipColor:
-        leds.zip("top", color, 10, 1, 2, true);
+        leds.zip("mechanismFrame", color, 10, 1, 2, true);
         break;
       case waveColor:
-        leds.wave("top", color, 3);
+        leds.wave("mechanismFrame", color, 3);
       case colorTest:
-        leds.colorTest("top", hueValue.getDouble(0));
+        leds.colorTest("mechanismFrame", hueValue.getDouble(0));
         break;
       default:
-        leds.rainbow("top", 3);
+        leds.rainbow("mechanismFrame", 3);
         break;
     }
   }

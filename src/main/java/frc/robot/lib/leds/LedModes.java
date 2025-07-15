@@ -17,7 +17,7 @@ public class LedModes {
     private final Timer fillTimer = new Timer();
     private final Timer carnivalTimer = new Timer();
 
-    private static int brightnessLimit = 100;
+    private int brightnessLimit = 100;
     private int m_rainbowFirstPixelHue;
     private int m_waveValue;
     private int m_range;
@@ -35,6 +35,7 @@ public class LedModes {
      * @param brightness is how bright you would like you LEDs. Value between 0 and 1
     */
     public LedModes(int length, int port, int brightness) {
+        this.brightnessLimit = brightness;
         m_Led = new AddressableLED(port);
         ledBuffer = new AddressableLEDBuffer(length);
 
@@ -49,6 +50,10 @@ public class LedModes {
 
     protected void setData() {
         m_Led.setData(ledBuffer);
+    }
+
+    public int getLedBrightness() {
+        return brightnessLimit;
     }
 
     /**
