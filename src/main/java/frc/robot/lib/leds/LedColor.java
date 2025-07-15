@@ -1,7 +1,7 @@
 package frc.robot.lib.leds;
 
 import frc.robot.lib.leds.LedController;
-/** This is a enum containing LED colors in the HSV format.
+/** This is a enum containing 37 LED colors in the HSV format.
  * Colors must be pulled from this file to be compatible with the White Bear Lake LED Library.
  * 
  * If a color is not supported, 

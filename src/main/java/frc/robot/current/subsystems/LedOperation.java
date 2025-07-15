@@ -1,7 +1,10 @@
 package frc.robot.current.subsystems;
 
+import java.util.Optional;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -71,7 +74,7 @@ public class LedOperation extends SubsystemBase {
     leds.addSection("underglow", 161, 200);
 
     m_chooser.setDefaultOption("Solid", setSolid);
-    m_chooser.addOption("Two Color Orange and Magenta", setTwoToneSolid);
+    m_chooser.addOption("Two Color Solid", setTwoToneSolid);
     m_chooser.addOption("Solid Black", setColorBlack);
     m_chooser.addOption("Rainbow", rainbow);
     m_chooser.addOption("Wave Blue and Green", fadeBlueGreen);
@@ -127,7 +130,7 @@ public class LedOperation extends SubsystemBase {
     if (DriverStation.isEStopped()) {
       leds.strobe("full", LedColor.RED, 1);
     } else if (DriverStation.isAutonomousEnabled()) {
-      leds.rainbow("full", 4);
+      leds.rainbow("top", 4);
     } else if (DriverStation.isTeleopEnabled()) {
       if (automaticLED) {
         updateState();
@@ -136,39 +139,27 @@ public class LedOperation extends SubsystemBase {
       }
     } else {
       if (DriverStation.isDSAttached()) {
-        leds.fill("full", LedColor.ORANGE, 2, 2, false);
+        leds.fill("top", LedColor.ORANGE, 2, 2, false);
       } else if (DriverStation.isFMSAttached()) {
-        leds.solid("full", LedColor.ORANGE);
+        leds.solid("top", LedColor.ORANGE);
       } else {
-        leds.breath("full", LedColor.ORANGE, 3);
+        leds.breath("top", LedColor.ORANGE, 2);
+      }
+    }
+
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Blue) {
+        leds.solid("underglow", LedColor.BLUE);
+      } else {
+        leds.solid("underglow", LedColor.RED);
       }
     }
   }
 
+  /** Method to set the LEDs automatically depending on the robots state */
   public void updateState() {
-    // switch (supersystemState.getMode()) {
-    // case CORAL:
-    // leds.solid("top", LedColor.BRIGHT_PURPLE);
-    // break;
-    // case ALGAE:
-    // leds.solid("top", LedColor.AQUA);
-    // }
 
-    // if (supersystemState.isElevatorGoingUp()) {
-    // leds.fill("frontBottom", LedColor.YELLOW, 1, 3, false);
-    // leds.fill("backBottom", LedColor.YELLOW, 1, 3, true);
-    // } else if (supersystemState.isElevatorGoingDown()) {
-    // leds.fill("frontBottom", LedColor.YELLOW, 1, 3, true);
-    // leds.fill("backBottom", LedColor.YELLOW, 1, 3, false);
-    // } else {
-    // if (supersystemState.getElevatorStatus()) {
-    // leds.breath("frontBottom", LedColor.GREEN, 2);
-    // leds.breath("backBottom", LedColor.GREEN, 2);
-    // } else {
-    // leds.solid("frontBottom", LedColor.RED);
-    // leds.solid("backBottom", LedColor.RED);
-    // }
-    // }
   }
 
   /** Method to set the LEDs to different states during the match */
@@ -246,42 +237,42 @@ public class LedOperation extends SubsystemBase {
 
     switch (manualLedState) {
       case setSolid:
-        leds.solid("full", color);
+        leds.solid("top", color);
         break;
       case setTwoToneSolid:
-        leds.solidTwoColor("full", LedColor.TURQUOISE, LedColor.PEACH);
+        leds.solidTwoColor("top", LedColor.TURQUOISE, LedColor.PEACH);
         break;
       case fadeBlueGreen:
-        leds.fade("full", LedColor.GREEN, LedColor.BLUE, 1, 3);
+        leds.fade("top", LedColor.GREEN, LedColor.BLUE, 1, 3);
         break;
       case breathColor:
-        leds.breath("full", color, 3);
+        leds.breath("top", color, 3);
         break;
       case rainbow:
-        leds.rainbow("full", 3);
+        leds.rainbow("top", 3);
         break;
       case strobeColor:
-        leds.strobe("full", color, 1);
+        leds.strobe("top", color, 1);
         break;
       case carnivalEasterGreenPurple:
-        leds.carnival("full", LedColor.EASTER_GREEN, LedColor.EASTER_PURPLE, 2, 4);
+        leds.carnival("top", LedColor.EASTER_GREEN, LedColor.EASTER_PURPLE, 2, 4);
         break;
       case setColorBlack:
-        leds.solid("full", LedColor.BLACK);
+        leds.solid("top", LedColor.BLACK);
         break;
       case fillColor:
-        leds.fill("full", color, 1, 2, true);
+        leds.fill("top", color, 1, 2, true);
         break;
       case zipColor:
-        leds.zip("full", color, 10, 1, 2, true);
+        leds.zip("top", color, 10, 1, 2, true);
         break;
       case waveColor:
-        leds.wave("full", color, 3);
+        leds.wave("top", color, 3);
       case colorTest:
-        leds.colorTest("full", hueValue.getDouble(0));
+        leds.colorTest("top", hueValue.getDouble(0));
         break;
       default:
-        leds.rainbow("full", 3);
+        leds.rainbow("top", 3);
         break;
     }
   }
