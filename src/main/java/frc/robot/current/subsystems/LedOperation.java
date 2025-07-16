@@ -33,7 +33,7 @@ public class LedOperation extends SubsystemBase {
     leds.addSection("left", 131, 191);
     leds.addSection("mechanismFrame", 32, 191);
     leds.addSection("underglow1", 0, 32);
-    leds.addSection("underglow", 191, 230);
+    leds.addSection("underglow", 191, 238);
 
     m_chooser.setDefaultOption("Solid", () -> leds.solid("mechanismFrame", color));
     m_chooser.addOption("Two Color Solid", () -> leds.solidTwoColor("mechanismFrame", LedColor.TURQUOISE, LedColor.PEACH));
