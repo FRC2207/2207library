@@ -1,6 +1,5 @@
 package frc.robot.lib.swerve.updated;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.littletonrobotics.junction.Logger;
