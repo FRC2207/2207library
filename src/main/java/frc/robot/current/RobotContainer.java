@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.current.Constants.OperatorConstants;
 import frc.robot.current.commands.Autos;
 import frc.robot.current.commands.ExampleCommand;
-import frc.robot.current.subsystems.ExampleSubsystem;
+import frc.robot.current.subsystems.ExampleFlyWheel;
+import frc.robot.current.subsystems.ExamplePivot;
 import frc.robot.current.subsystems.LedOperation;
 import frc.robot.lib.commands.DriveWithController;
 import frc.robot.lib.swerve.updated.GyroIONavX2;
@@ -30,13 +31,16 @@ import frc.robot.lib.swerve.updated.SwerveDrive;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  
+  // The robot's subsystems and commands are defined here...
+  private ExamplePivot exPivot;
+  private ExampleFlyWheel exFly;
   private SwerveDrive swerveDrive;
   private LedOperation leds;
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driveXbox = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController controlXbox = new CommandXboxController(OperatorConstants.kOtherControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -44,6 +48,9 @@ public class RobotContainer {
   public RobotContainer() {
 
     leds = new LedOperation();
+    exPivot = new ExamplePivot(Constants.robot);
+    exFly = new ExampleFlyWheel(Constants.robot);
+
     swerveDrive = new SwerveDrive(
         20.75,
         20.75,
@@ -76,14 +83,18 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+
+        exPivot.setDefaultCommand(
+          Commands.run(() -> {
+            exPivot.adjustHeight(-1 * controlXbox.getLeftY());
+          },
+            exPivot));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
-    driveXbox.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    controlXbox.b().whileTrue(exFly.launch());
 
     swerveDrive.setDefaultCommand(
         new DriveWithController(swerveDrive, 0.5, 0.25, () -> driveXbox.getLeftX(), () -> driveXbox.getLeftY(),
@@ -98,6 +109,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }
