@@ -1,4 +1,4 @@
-package frc.robot.lib.motors.motorController;
+package frc.robot.lib.motorController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;

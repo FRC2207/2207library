@@ -1,4 +1,4 @@
-package frc.robot.lib.motors.motorController;
+package frc.robot.lib.motorController;
 
 import org.littletonrobotics.junction.AutoLog;
 

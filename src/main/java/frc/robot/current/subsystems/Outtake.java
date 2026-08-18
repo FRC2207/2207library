@@ -18,15 +18,15 @@ import frc.robot.current.Constants;
 import frc.robot.current.Constants.OuttakeConstants;
 import frc.robot.current.FieldConstants;
 import frc.robot.current.subsystems.swerveDrive.Drive;
-import frc.robot.lib.motors.motorController.MotorController;
-import frc.robot.lib.motors.motorController.MotorControllerIO;
-import frc.robot.lib.motors.motorController.MotorIOSim;
-import frc.robot.lib.motors.motorController.MotorIOSim.ControlType;
-import frc.robot.lib.motors.motorController.MotorIOSim.MotorModelSim;
-import frc.robot.lib.motors.motorController.MotorIOSpark;
-import frc.robot.lib.motors.motorController.MotorIOSpark.EncoderType;
-import frc.robot.lib.motors.motorController.MotorIOSpark.MotorModel;
-import frc.robot.lib.motors.motorController.MotorIOSpark.SparkType;
+import frc.robot.lib.motorController.MotorController;
+import frc.robot.lib.motorController.MotorControllerIO;
+import frc.robot.lib.motorController.MotorIOSim;
+import frc.robot.lib.motorController.MotorIOSpark;
+import frc.robot.lib.motorController.MotorIOSim.ControlType;
+import frc.robot.lib.motorController.MotorIOSim.MotorModelSim;
+import frc.robot.lib.motorController.MotorIOSpark.EncoderType;
+import frc.robot.lib.motorController.MotorIOSpark.MotorModel;
+import frc.robot.lib.motorController.MotorIOSpark.SparkType;
 
 public class Outtake extends SubsystemBase {
     private MotorController highMotor;
