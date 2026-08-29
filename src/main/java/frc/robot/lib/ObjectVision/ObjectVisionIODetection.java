@@ -1,61 +1,46 @@
 package frc.robot.lib.ObjectVision;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.networktables.BooleanSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArraySubscriber;
-import java.util.function.Consumer;
 
 public class ObjectVisionIODetection implements ObjectVisionIO {
 
     private NetworkTableInstance inst = NetworkTableInstance.getDefault();
     private NetworkTable table = inst.getTable("VisionData");   
-    private StructArraySubscriber<FuelStruct> fuelSub;
-    private BooleanSubscriber hopperSubscriber;
-
-    private StructArraySubscriber<Pose2d> kindleWaypoints;
-    private Consumer<Pose2d[]> waypointListener;
+    private StructArraySubscriber<ObjectStruct> objectSub;
 
     public ObjectVisionIODetection() {
 
-        // fuelSub = table.getStructArrayTopic("fuel_data", FuelStruct.struct).subscribe(new FuelStruct[]);
+        // objectSub = table.getStructArrayTopic("object_data", objectStruct.struct).subscribe(new objectStruct[]);
 
-        fuelSub = table.getStructArrayTopic("vision_data", FuelStruct.struct).subscribe(new FuelStruct[0]);
-        hopperSubscriber = table.getBooleanTopic("hopper_sees_object").subscribe(false);
-        kindleWaypoints = table.getStructArrayTopic("DrawnWaypoints", Pose2d.struct).subscribe(new Pose2d[0]);
-
-        inst.addListener(
-            table.getStructArrayTopic("DrawnWaypoints", Pose2d.struct),
-            java.util.EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-            event -> {
-                Pose2d[] waypoints = kindleWaypoints.get();
-
-                if (waypointListener != null) {
-                    waypointListener.accept(waypoints);
-                }
-            }
-        );
-    }
-
-    public void setWaypointListener(Consumer<Pose2d[]> listener) {
-        this.waypointListener = listener;
+        objectSub = table.getStructArrayTopic("vision_data", ObjectStruct.struct).subscribe(new ObjectStruct[0]);
     }
     
     @Override
     public void updateInputs(ObjectVisionIOInputs inputs) {
-        FuelStruct[] fuels = fuelSub.get();
-        double[] fuelXPoints = new double[fuels.length];
-        double[] fuelYPoints = new double[fuels.length];
-        for (int i = 0; i < fuels.length; i++) {
-            fuelXPoints[i] = fuels[i].x;
-            fuelYPoints[i] = fuels[i].y;
+        ObjectStruct[] objects = objectSub.get();
+        double[] objectXPoints = new double[objects.length];
+        double[] objectYPoints = new double[objects.length];
+        double[] objectZPoints = new double[objects.length];
+        double[] objectPitchPoints = new double[objects.length];
+        double[] objectRollPoints = new double[objects.length];
+        double[] objectYawPoints = new double[objects.length];
+        for (int i = 0; i < objects.length; i++) {
+            objectXPoints[i] = objects[i].x;
+            objectYPoints[i] = objects[i].y;
+            objectZPoints[i] = objects[i].z;
+            objectRollPoints[i] = objects[i].roll;
+            objectPitchPoints[i] = objects[i].pitch;
+            objectYawPoints[i] = objects[i].yaw;
         }
         
-        inputs.fuelX = fuelXPoints;
-        inputs.fuelY = fuelYPoints;
-        inputs.hopperSeesObject = hopperSubscriber.get();
-        inputs.kindleWaypoints = kindleWaypoints.get();
+        inputs.objectX = objectXPoints;
+        inputs.objectY = objectYPoints;
+        inputs.objectZ = objectZPoints;
+        inputs.objectPitch = objectPitchPoints;
+        inputs.objectRoll = objectRollPoints;
+        inputs.objectYaw = objectYawPoints;
+        
     }
 }

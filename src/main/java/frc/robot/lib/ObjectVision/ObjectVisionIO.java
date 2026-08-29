@@ -7,13 +7,13 @@ import java.util.function.Consumer;
 public interface ObjectVisionIO {
   @AutoLog
   public static class ObjectVisionIOInputs {
-    public double[] fuelX = new double[]{};
-    public double[] fuelY = new double[]{};
-    public boolean hopperSeesObject;
-    public Pose2d[] kindleWaypoints = new Pose2d[]{};
+    public double[] objectX = new double[]{};
+    public double[] objectY = new double[]{};
+    public double[] objectZ = new double[]{};
+    public double[] objectPitch = new double[]{};
+    public double[] objectYaw = new double[]{};
+    public double[] objectRoll = new double[]{};
   }
 
   public default void updateInputs(ObjectVisionIOInputs inputs) {}
-
-  public default void setWaypointListener(Consumer<Pose2d[]> listener) {}
 }
