@@ -2,8 +2,6 @@ package frc.robot.lib.motorController;
 
 import org.littletonrobotics.junction.Logger;
 
-import frc.robot.lib.motorController.MotorControllerIOInputsAutoLogged;
-
 //import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class MotorController{

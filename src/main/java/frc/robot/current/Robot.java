@@ -11,11 +11,12 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-// import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.lib.util.LocalADStarAK;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -34,16 +35,14 @@ public class Robot extends LoggedRobot {
    * initialization code.
    */
   public Robot() {
-    Logger.recordMetadata("ProjectName", "MyProject");
-    // Instantiate our RobotContainer. This will perform all our button bindings,
-    // and put our
-    // autonomous chooser on the dashboard.
+    Pathfinding.setPathfinder(new LocalADStarAK());
     
     if (isReal()) {
       Logger.addDataReceiver(new NT4Publisher());
       Logger.addDataReceiver(new WPILOGWriter());
     } else {
       Logger.addDataReceiver(new NT4Publisher());
+      // This is for writing logs when in simulation, if needed
       // Logger.addDataReceiver(new WPILOGWriter());
 
       if (Constants.currentMode == frc.robot.current.Constants.Mode.REPLAY) {
@@ -65,6 +64,9 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start();
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
+    // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
   }
 

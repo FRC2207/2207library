@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.current.Pather;
 import frc.robot.lib.leds.LedColor;
 import frc.robot.lib.leds.LedController;
+import frc.robot.lib.roboRoute.RoboRoute;
 
 public class LedOperation extends SubsystemBase {
   public static final LedController leds = new LedController(125, 9, .75);
@@ -107,7 +107,7 @@ public class LedOperation extends SubsystemBase {
 
   /* Method to set the LEDs automatically depending on the robots state */
   public void updateState() {
-    if (Pather.isPathing) {
+    if (RoboRoute.isRouting) {
     leds.rainbow("top", 3);
     leds.rainbow("leftEdge", 5);
     } else {

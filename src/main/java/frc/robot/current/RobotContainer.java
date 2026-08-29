@@ -23,7 +23,6 @@ import frc.robot.current.subsystems.Hopper;
 import frc.robot.current.subsystems.Intake;
 import frc.robot.current.subsystems.LedOperation;
 import frc.robot.current.subsystems.Outtake;
-import frc.robot.current.Pather.Direction;
 import frc.robot.current.subsystems.Pivot;
 import frc.robot.current.subsystems.swerveDrive.Drive;
 import frc.robot.current.subsystems.swerveDrive.GyroIO;
@@ -34,6 +33,9 @@ import frc.robot.current.subsystems.swerveDrive.ModuleIOSpark;
 import frc.robot.lib.ObjectVision.ObjectVision;
 import frc.robot.lib.ObjectVision.ObjectVisionIODetection;
 import frc.robot.lib.commands.DriveCommands;
+import frc.robot.lib.roboRoute.RoboRoute;
+import frc.robot.lib.roboRoute.RoboRouteIO;
+import frc.robot.lib.roboRoute.RoboRouteIONetworkTables;
 import frc.robot.lib.util.AllianceRotationUtil;
 import frc.robot.lib.vision.Vision;
 import frc.robot.lib.vision.VisionIO;
@@ -66,6 +68,8 @@ public class RobotContainer {
   private Climber climber;
   @SuppressWarnings("unused")
   private LedOperation leds;
+  @SuppressWarnings("unused")
+  private RoboRoute roboRoute;
 
   private static final ControlType controlType = ControlType.ONEXBOX;
 
@@ -97,6 +101,8 @@ public class RobotContainer {
             new VisionIOPhotonVision(camera1Name, robotToCamera1),
             new VisionIOPhotonVision(camera2Name, robotToCamera2),
             new VisionIOPhotonVision(camera3Name, robotToCamera3));
+
+        roboRoute = new RoboRoute(new RoboRouteIONetworkTables());
         break;
 
       case SIM:
@@ -111,6 +117,8 @@ public class RobotContainer {
         vision = new Vision(drive::addVisionMeasurement,
             new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose),
             new VisionIOPhotonVisionSim(camera3Name, robotToCamera3, drive::getPose));
+        
+        roboRoute = new RoboRoute(new RoboRouteIONetworkTables());
 
         break;
       default:
@@ -131,7 +139,10 @@ public class RobotContainer {
             },
             new VisionIO() {
             });
+
+        roboRoute = new RoboRoute(new RoboRouteIO() {});
         break;
+
     }
 
     hopper = new Hopper();
@@ -168,7 +179,6 @@ public class RobotContainer {
 
     }
 
-    SmartDashboard.putData("KindleCommand", objectVision.kindleCommand());
     // Configure the trigger bindings
     configureBindings();
 
@@ -191,7 +201,6 @@ public class RobotContainer {
         () -> -0.45 * driveXbox.getLeftX(),
         () -> -0.5 * driveXbox.getRightX()));
 
-    Pather.configureKindleListeners();
   }
 
   /**
@@ -215,11 +224,6 @@ public class RobotContainer {
             () -> -driveXbox.getLeftY(),
             () -> -driveXbox.getLeftX(),
             () -> -0.75 * driveXbox.getRightX()));
-
-    driveXbox.back().whileTrue(
-        Commands.defer(() -> Pather.trenchAlign(Direction.LEFT), Set.of(drive)));
-    driveXbox.start().whileTrue(
-        Commands.defer(() -> Pather.trenchAlign(Direction.RIGHT), Set.of(drive)));
 
     // Reset gyro to 0° when B button is pressed
     driveXbox
@@ -284,6 +288,7 @@ public class RobotContainer {
         controlXbox.povDown().onTrue(pivot.gotoCollectionPos());
 
         controlXbox.leftTrigger().whileTrue(intake.intakeSlow()).onFalse(intake.stop());
+
 
         driveXbox.povLeft().whileTrue(objectVision.kindleCommand());
     }
