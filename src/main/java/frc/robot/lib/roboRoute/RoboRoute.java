@@ -68,7 +68,11 @@ public class RoboRoute extends SubsystemBase{
     }
 
     public static Command runRoute(Pose2d[] route){
+        if (route.length < 2){
+            return Commands.none();
+        }
         isRouting = true;
+
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(route);
 
         PathPlannerPath path = new PathPlannerPath(waypoints, constraints, null, null);
