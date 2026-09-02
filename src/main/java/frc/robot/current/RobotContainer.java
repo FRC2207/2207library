@@ -102,6 +102,7 @@ public class RobotContainer {
             new VisionIOPhotonVision(camera2Name, robotToCamera2),
             new VisionIOPhotonVision(camera3Name, robotToCamera3));
 
+        objectVision = new ObjectVision(drive, new ObjectVisionIODetection());
         roboRoute = new RoboRoute(new RoboRouteIONetworkTables());
         break;
 
@@ -118,6 +119,7 @@ public class RobotContainer {
             new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose),
             new VisionIOPhotonVisionSim(camera3Name, robotToCamera3, drive::getPose));
         
+        objectVision = new ObjectVision(drive, new ObjectVisionIODetection());
         roboRoute = new RoboRoute(new RoboRouteIONetworkTables());
 
         break;
@@ -140,13 +142,13 @@ public class RobotContainer {
             new VisionIO() {
             });
 
+        objectVision = new ObjectVision(drive, new ObjectVisionIO() {});
         roboRoute = new RoboRoute(new RoboRouteIO() {});
         break;
 
     }
 
     hopper = new Hopper();
-    objectVision = new ObjectVision(drive, new ObjectVisionIODetection());
     outtake = new Outtake(drive, hopper);
     intake = new Intake(drive);
     pivot = new Pivot();
