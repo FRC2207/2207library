@@ -31,6 +31,7 @@ import frc.robot.current.subsystems.swerveDrive.ModuleIO;
 import frc.robot.current.subsystems.swerveDrive.ModuleIOSim;
 import frc.robot.current.subsystems.swerveDrive.ModuleIOSpark;
 import frc.robot.lib.ObjectVision.ObjectVision;
+import frc.robot.lib.ObjectVision.ObjectVisionIO;
 import frc.robot.lib.ObjectVision.ObjectVisionIODetection;
 import frc.robot.lib.commands.DriveCommands;
 import frc.robot.lib.roboRoute.RoboRoute;
