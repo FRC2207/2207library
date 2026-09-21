@@ -49,8 +49,8 @@ public class Outtake extends SubsystemBase {
     private final double motorStalledCurrent = 30.0; // Current threshold to determine if the motor is stalled
 
     private final LoggedNetworkNumber manualShooterSetpointHigh = new LoggedNetworkNumber("/Outtake/ShooterSetpointHigh",
-            2000.0);
-    private final LoggedNetworkNumber manualShooterSetpointLow = new LoggedNetworkNumber("/Outtake/ShootSetpointLow", 3000.0);
+            2500.0);
+    private final LoggedNetworkNumber manualShooterSetpointLow = new LoggedNetworkNumber("/Outtake/ShootSetpointLow", 3500.0);
 
     public Outtake(Drive drive, Hopper hopper) {
         this.swerve = drive;

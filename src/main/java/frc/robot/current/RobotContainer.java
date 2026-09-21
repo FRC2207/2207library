@@ -72,12 +72,6 @@ public class RobotContainer {
   @SuppressWarnings("unused")
   private RoboRoute roboRoute;
 
-  private static final ControlType controlType = ControlType.ONEXBOX;
-
-  public enum ControlType {
-    ONEXBOX, TWOXBOX
-  }
-
   private final CommandXboxController driveXbox = new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final CommandXboxController controlXbox = new CommandXboxController(OperatorConstants.kOtherControllerPort);
 
@@ -184,26 +178,6 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-
-    SmartDashboard.putData("Point To Hub", DriveCommands.joystickDrivePointToTarget(
-        drive,
-        () -> -driveXbox.getLeftY(),
-        () -> -driveXbox.getLeftX(),
-        // compute absolute heading to the target (field frame) from current robot pose
-        () -> {
-          Pose2d target = AllianceRotationUtil.apply(FieldConstants.Elements.blueHubPose);
-          Pose2d robotPose = drive.getPose();
-          double dx = target.getTranslation().getX() - robotPose.getTranslation().getX();
-          double dy = target.getTranslation().getY() - robotPose.getTranslation().getY();
-          return Math.atan2(dy, dx);
-        }));
-
-    SmartDashboard.putData("Slow Mode", DriveCommands.joystickDrive(
-        drive,
-        () -> -0.45 * driveXbox.getLeftY(),
-        () -> -0.45 * driveXbox.getLeftX(),
-        () -> -0.5 * driveXbox.getRightX()));
-
   }
 
   /**
@@ -221,12 +195,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // SPEED LIMITS
+    private final double movementMultiplier = 0.25;
+    private final double rotationMultiplier = 0.25;
+    
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -driveXbox.getLeftY(),
-            () -> -driveXbox.getLeftX(),
-            () -> -0.75 * driveXbox.getRightX()));
+            () -> movementMultiplier * -driveXbox.getLeftY(),
+            () -> movementMultiplier * -driveXbox.getLeftX(),
+            () -> rotationMultiplier * -0.75 * driveXbox.getRightX()));
 
     // Reset gyro to 0° when B button is pressed
     driveXbox
@@ -238,63 +216,17 @@ public class RobotContainer {
                 drive)
                 .ignoringDisable(true));
 
-    switch (controlType) {
-      case ONEXBOX:
-
         driveXbox.leftTrigger().whileTrue(intake.intakeSlow()).onFalse(intake.stop());
         driveXbox.leftBumper().whileTrue(intake.intakeFast()).onFalse(intake.stop());
 
-        driveXbox.rightTrigger().onTrue(outtake.launcherPro()).onFalse(outtake.stop());
         driveXbox.rightBumper().onTrue(outtake.manualTuningLaunch()).onFalse(outtake.stop());
 
         driveXbox.povUp().onTrue(pivot.gotoStoredPos());
         driveXbox.povDown().onTrue(pivot.gotoCollectionPos());
 
-        driveXbox.povRight().whileTrue(DriveCommands.joystickDrivePointToTarget(
-            drive,
-            () -> -driveXbox.getLeftY(),
-            () -> -driveXbox.getLeftX(),
-            // compute absolute heading to the target (field frame) from current robot pose
-            () -> {
-              Pose2d target = AllianceRotationUtil.apply(FieldConstants.Elements.blueHubPose);
-              Pose2d robotPose = drive.getPose();
-              double dx = target.getTranslation().getX() - robotPose.getTranslation().getX();
-              double dy = target.getTranslation().getY() - robotPose.getTranslation().getY();
-              return Math.atan2(dy, dx);
-            }));
-
-        driveXbox.y().whileTrue(climber.climbMaxBoth());
-        driveXbox.a().whileTrue(climber.climbStowedBoth());
-        driveXbox.x().whileTrue(Commands.defer(() -> climber.climbDownIndividual(), Set.of(climber)));
-        
-        break;
-
-      case TWOXBOX:
-      default:
-        driveXbox.leftBumper().whileTrue(
-            DriveCommands.joystickDrivePointToTarget(
-                drive,
-                () -> -driveXbox.getLeftY(),
-                () -> -driveXbox.getLeftX(),
-                // compute absolute heading to the target (field frame) from current robot pose
-                () -> {
-                  Pose2d target = AllianceRotationUtil.apply(FieldConstants.Elements.blueHubPose);
-                  Pose2d robotPose = drive.getPose();
-                  double dx = target.getTranslation().getX() - robotPose.getTranslation().getX();
-                  double dy = target.getTranslation().getY() - robotPose.getTranslation().getY();
-                  return Math.atan2(dy, dx);
-                }));
-
-        controlXbox.rightBumper().onTrue(outtake.continuousLaunch()).onFalse(outtake.stop());
-
-        controlXbox.povUp().onTrue(pivot.gotoStoredPos());
-        controlXbox.povDown().onTrue(pivot.gotoCollectionPos());
-
-        controlXbox.leftTrigger().whileTrue(intake.intakeSlow()).onFalse(intake.stop());
-
-
-        driveXbox.povLeft().whileTrue(objectVision.kindleCommand());
-    }
+        // driveXbox.y().whileTrue(climber.climbMaxBoth());
+        // driveXbox.a().whileTrue(climber.climbStowedBoth());
+        // driveXbox.x().whileTrue(Commands.defer(() -> climber.climbDownIndividual(), Set.of(climber)));
   }
 
   /**
@@ -303,7 +235,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    // Change to null to prevent auto from running during demos
+    return null;
+    // return autoChooser.get();
   }
 
   public Drive getDriveSubsystem() {
