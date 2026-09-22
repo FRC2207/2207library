@@ -40,9 +40,9 @@ public class RoboRoute extends SubsystemBase{
         Trigger poseTrigger = new Trigger(() -> inputs.runPose);
         Trigger routeTrigger = new Trigger(() -> inputs.runRoute);
 
-        pathTrigger.onTrue(runPath(inputs.path));
-        poseTrigger.onTrue(pathfindToPose(inputs.pose));
-        routeTrigger.onTrue(runRoute(inputs.route));
+        pathTrigger.onTrue(Commands.deferredProxy(() -> runPath(inputs.path)));
+        poseTrigger.onTrue(Commands.deferredProxy(() -> pathfindToPose(inputs.pose)));
+        routeTrigger.onTrue(Commands.deferredProxy(() -> runRoute(inputs.route)));
     }
 
     @Override
