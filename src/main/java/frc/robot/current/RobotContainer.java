@@ -11,7 +11,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -37,14 +36,11 @@ import frc.robot.lib.commands.DriveCommands;
 import frc.robot.lib.roboRoute.RoboRoute;
 import frc.robot.lib.roboRoute.RoboRouteIO;
 import frc.robot.lib.roboRoute.RoboRouteIONetworkTables;
-import frc.robot.lib.util.AllianceRotationUtil;
 import frc.robot.lib.vision.Vision;
 import frc.robot.lib.vision.VisionIO;
 import frc.robot.lib.vision.VisionIOPhotonVision;
 import frc.robot.lib.vision.VisionIOPhotonVisionSim;
 import static frc.robot.lib.vision.VisionConstants.*;
-
-import java.util.Set;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -63,6 +59,7 @@ public class RobotContainer {
   private Pivot pivot;
   @SuppressWarnings("unused")
   private Vision vision;
+  @SuppressWarnings("unused")
   private ObjectVision objectVision;
   private Outtake outtake;
   private Hopper hopper;
@@ -73,7 +70,7 @@ public class RobotContainer {
   private RoboRoute roboRoute;
 
   private final CommandXboxController driveXbox = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController controlXbox = new CommandXboxController(OperatorConstants.kOtherControllerPort);
+  // private final CommandXboxController controlXbox = new CommandXboxController(OperatorConstants.kOtherControllerPort);
 
   private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -196,8 +193,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // SPEED LIMITS
-    private final double movementMultiplier = 0.25;
-    private final double rotationMultiplier = 0.25;
+    final double movementMultiplier = 0.25;
+    final double rotationMultiplier = 0.25;
     
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
