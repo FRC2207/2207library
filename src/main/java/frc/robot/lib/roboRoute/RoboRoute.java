@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
@@ -75,7 +76,9 @@ public class RoboRoute extends SubsystemBase{
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(route);
 
-        PathPlannerPath path = new PathPlannerPath(waypoints, constraints, null, null);
+        GoalEndState goalEndState = new GoalEndState(0.0, route[route.length - 1].getRotation());
+        PathPlannerPath path =
+                new PathPlannerPath(waypoints, constraints, null, goalEndState);
         path.preventFlipping = true;
 
         return AutoBuilder.pathfindThenFollowPath(path, constraints).finallyDo(() -> isRouting = false);
