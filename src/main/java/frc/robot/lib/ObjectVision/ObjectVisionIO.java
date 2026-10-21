@@ -1,8 +1,6 @@
 package frc.robot.lib.ObjectVision;
-import edu.wpi.first.math.geometry.Pose2d;
 
 import org.littletonrobotics.junction.AutoLog;
-import java.util.function.Consumer;
 
 public interface ObjectVisionIO {
   @AutoLog
